@@ -135,20 +135,3 @@ function isTaskOverdue(task) {
 **Bug 2 — Silent failure on missing or invalid data.** The function compares strings without checking them, so bad data never raises an error and just produces a wrong answer: `null` and `undefined` happen to return `false` through type coercion, an empty string returns `true`, and a non-padded or differently formatted date such as `"2026-9-5"` or `"15/10/2026"` is compared character by character and gives an arbitrary result.
 
 TaskFlow avoids both. [`CalendarDay`](iOS/TaskFlow/Models/CalendarDay.swift) strictly parses `YYYY-MM-DD` into a real calendar date (invalid input becomes `nil`), "today" comes from the device's local calendar, and [`TaskItem.isOverdue`](iOS/TaskFlow/Models/TaskItem.swift) returns `false` for completed tasks or when there is no valid date. Unit tests cover each of these cases, including a UTC-versus-IST test.
-
-## 6. AI Usage
-
-**Tool used:** Claude Code (Anthropic's AI coding assistant).
-
-**What I asked it to generate:**
-
-- The Vapor backend: model, migration, seeding from the provided JSON, the three endpoints, validation, the error format, and XCTVapor tests.
-- The SwiftUI app: MVVM structure, networking layer, list, detail and add-task screens, reusable components, and Swift Testing unit tests.
-- The hand-written Xcode project file, the app icon (drawn with a small CoreGraphics script), and a first draft of this README.
-
-**What was verified, and how:**
-
-- Both projects built from the command line with no warnings in project code; all 18 backend tests and 27 iOS tests pass.
-- The endpoints were exercised with `curl`, including combined filters and a `400` validation response.
-- The app was run on the iOS simulator against the real backend, checking each edge case: an undated task, a completed overdue task, Aarav + Completed with no results, and a too-long title rejected by the server.
-- That manual run found three issues that were then fixed: the large navigation title rendered blank above the filter bar, labels inside list rows were spread too wide, and the form's error banner kept a stale "Validation failed." after the field error was corrected (a regression test was added for the last one).
