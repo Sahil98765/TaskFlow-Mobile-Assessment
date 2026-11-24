@@ -1,0 +1,19 @@
+.DS_Store
+
+# Swift Package Manager / Vapor
+Backend/.build/
+Backend/.swiftpm/
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+
+# Xcode
+DerivedData/
+build/
+xcuserdata/
+*.xcuserstate
+*.xcscmblueprint
+
+# Environment
+.env
+.env.*
